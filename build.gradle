@@ -13,6 +13,7 @@ compileJava.options.encoding = javadoc.options.encoding = 'UTF-8'
 group = 'com.nachtraben'
 version = '1.0'
 
+//
 
 configurations.all {
     resolutionStrategy {
