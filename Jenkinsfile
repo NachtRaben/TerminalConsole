@@ -17,20 +17,20 @@ pipeline {
                 steps {
                     rtServer (
                         id: "nachtraben.com",
-                        url: SERVER_URL,
-                        credentialsId: CREDENTIALS
+                        url: "https://nachtraben.com/artifactory",
+                        credentialsId: "nachtraben.com"
                     )
 
                     rtGradleDeployer (
                         id: "GRADLE_DEPLOYER",
                         serverId: "ARTIFACTORY_SERVER",
-                        repo: "libs-release-local",
+                        repo: "snapshots",
                     )
 
                     rtGradleResolver (
                         id: "GRADLE_RESOLVER",
                         serverId: "ARTIFACTORY_SERVER",
-                        repo: "jcenter"
+                        repo: "snapshots"
                     )
                 }
             }
@@ -38,7 +38,7 @@ pipeline {
     stage('Deploy') {
       steps {
         rtGradleRun (
-          tool: GRADLE_TOOL, // Tool name from Jenkins configuration
+          tool: "gradle", // Tool name from Jenkins configuration
           rootDir: "gradle-examples/gradle-example-ci-server/",
           buildFile: 'build.gradle',
           tasks: 'clean artifactoryPublish',
