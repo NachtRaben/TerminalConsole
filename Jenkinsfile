@@ -17,15 +17,19 @@ pipeline {
                 steps {
                     rtServer (
                         id: "nachtraben.com",
+                        url: SERVER_URL,
+                        credentialsId: CREDENTIALS
                     )
 
                     rtGradleDeployer (
                         id: "GRADLE_DEPLOYER",
+                        serverId: "ARTIFACTORY_SERVER",
                         repo: "libs-release-local",
                     )
 
                     rtGradleResolver (
                         id: "GRADLE_RESOLVER",
+                        serverId: "ARTIFACTORY_SERVER",
                         repo: "jcenter"
                     )
                 }
