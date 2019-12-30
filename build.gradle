@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'java-library'
     id 'maven'
+    id "com.jfrog.artifactory" version "4.13.0"
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
@@ -44,4 +45,13 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     //
+}
+
+artifactory {
+    contextUrl = "https://nachtraben.com/artifactory"
+    publish {
+        repoKey = 'snapshots'
+        username = "${artifactory_user}"
+        password = "${artifactory_password}"
+    }
 }

@@ -9,7 +9,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh './gradlew install'
+        sh './gradlew artifactoryPublish'
       }
     }
 
