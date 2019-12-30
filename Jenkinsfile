@@ -23,13 +23,13 @@ pipeline {
 
                     rtGradleDeployer (
                         id: "GRADLE_DEPLOYER",
-                        serverId: "ARTIFACTORY_SERVER",
+                        serverId: "nachtraben.com",
                         repo: "snapshots",
                     )
 
                     rtGradleResolver (
                         id: "GRADLE_RESOLVER",
-                        serverId: "ARTIFACTORY_SERVER",
+                        serverId: "nachtraben.com",
                         repo: "snapshots"
                     )
                 }
