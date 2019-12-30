@@ -46,12 +46,3 @@ dependencies {
     api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     //
 }
-
-artifactory {
-    contextUrl = "https://nachtraben.com/artifactory"
-    publish {
-        repoKey = 'snapshots'
-        username = "${artifactory_user}"
-        password = "${artifactory_password}"
-    }
-}
