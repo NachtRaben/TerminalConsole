@@ -4,7 +4,7 @@ plugins {
     id 'java'
     id 'java-library'
     id 'maven'
-//    id "com.jfrog.artifactory" version "4.13.0"
+    id "com.jfrog.artifactory" version "4.13.0"
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
@@ -36,6 +36,15 @@ processResources {
 shadowJar.classifier = ""
 
 repositories {
+    maven {
+        name = "NachtRaben-Artifactory"
+        url = "https://nachtraben.com/artifactory/snapshots"
+        credentials {
+            username = System.getenv("ARTIFACTORY_USR") ?: "${artifactory.nachtraben.username}"
+            password = System.getenv("ARTIFACTORY_PWD") ?: "${artifactory.nachtraben.password}"
+
+        }
+    }
     maven { url="https://papermc.io/repo/repository/maven-public/"}
     mavenCentral()
 }
@@ -45,4 +54,14 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     //
+}
+
+artifactory {
+    contextUrl = "https://nachtraben.com/artifactory"
+    publish {
+        repoKey = 'snapshots'
+        username = System.getenv("ARTIFACTORY_USR") ?: "${artifactory.nachtraben.username}"
+        password = System.getenv("ARTIFACTORY_PWD") ?: "${artifactory.nachtraben.password}"
+        maven = true
+    }
 }

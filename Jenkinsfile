@@ -1,5 +1,11 @@
 pipeline {
   agent any
+  triggers {
+    githubPush()
+  }
+  environment {
+    ARTIFACTORY = credentials("artifactory")
+  }
   stages {
     stage('Build') {
       steps {
@@ -13,39 +19,9 @@ pipeline {
       }
     }
 
-    stage ('Artifactory configuration') {
-                steps {
-                    rtServer (
-                        id: "nachtraben.com",
-                        url: "https://nachtraben.com/artifactory",
-                        credentialsId: "nachtraben.com"
-                    )
-
-                    rtGradleDeployer (
-                        id: "GRADLE_DEPLOYER",
-                        serverId: "nachtraben.com",
-                        repo: "snapshots",
-                    )
-
-                    rtGradleResolver (
-                        id: "GRADLE_RESOLVER",
-                        serverId: "nachtraben.com",
-                        repo: "snapshots"
-                    )
-                }
-            }
-
     stage('Deploy') {
       steps {
-        rtGradleRun (
-          tool: "gradle", // Tool name from Jenkins configuration
-          rootDir: "",
-          buildFile: 'build.gradle',
-          tasks: 'clean artifactoryPublish',
-          deployerId: "GRADLE_DEPLOYER",
-          resolverId: "GRADLE_RESOLVER"
-        )
-      }
+        sh './gradlew '
     }
 
     stage('Cleanup') {
