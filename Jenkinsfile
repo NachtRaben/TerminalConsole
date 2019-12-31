@@ -22,6 +22,7 @@ pipeline {
     stage('Deploy') {
       steps {
         sh './gradlew artifactoryPublish'
+      }
     }
 
     stage('Cleanup') {
