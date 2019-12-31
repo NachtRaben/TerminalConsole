@@ -14,8 +14,8 @@ compileJava.options.encoding = javadoc.options.encoding = 'UTF-8'
 group = 'com.nachtraben'
 version = '1.0'
 
-def artifactoryUser = System.getenv("ARTIFACTORY_USR") ?: getProperty("artifactory.nachtraben.username")
-def artifactoryPass = System.getenv("ARTIFACTORY_PWD") ?: getProperty("artifactory.nachtraben.pass")
+def artifactoryUser = System.getenv("ARTIFACTORY_USR")
+def artifactoryPass = System.getenv("ARTIFACTORY_PWD")
 
 configurations.all {
     resolutionStrategy {
