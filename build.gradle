@@ -14,11 +14,11 @@ compileJava.options.encoding = javadoc.options.encoding = 'UTF-8'
 group = 'com.nachtraben'
 version = '1.0'
 
-//
+def artifactoryUser = System.getenv("ARTIFACTORY_USR") ?: getProperty("artifactory.nachtraben.username")
+def artifactoryPass = System.getenv("ARTIFACTORY_PWD") ?: getProperty("artifactory.nachtraben.pass")
 
 configurations.all {
     resolutionStrategy {
-//            failOnVersionConflict()
         cacheDynamicVersionsFor 0, 'seconds'
         cacheChangingModulesFor 0, 'seconds'
     }
@@ -40,8 +40,8 @@ repositories {
         name = "NachtRaben-Artifactory"
         url = "https://nachtraben.com/artifactory/snapshots"
         credentials {
-            username = System.env["ARTIFACTORY_USR"] ?: "${artifactory.nachtraben.username}"
-            password = System.env["ARTIFACTORY_PWD"] ?: "${artifactory.nachtraben.password}"
+            username = artifactoryUser
+            password = artifactoryPass
 
         }
     }
@@ -60,8 +60,8 @@ artifactory {
     contextUrl = "https://nachtraben.com/artifactory"
     publish {
         repoKey = 'snapshots'
-        username = System.env["ARTIFACTORY_USR"] ?: "${artifactory.nachtraben.username}"
-        password = System.env["ARTIFACTORY_PWD"] ?: "${artifactory.nachtraben.password}"
+        username = artifactoryUser
+        password = artifactoryPass
         maven = true
     }
 }
