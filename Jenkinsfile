@@ -21,7 +21,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh './gradlew '
+        sh './gradlew artifactoryPublish'
     }
 
     stage('Cleanup') {
@@ -29,6 +29,5 @@ pipeline {
         cleanWs()
       }
     }
-
   }
 }
