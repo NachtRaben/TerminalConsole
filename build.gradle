@@ -40,8 +40,8 @@ repositories {
         name = "NachtRaben-Artifactory"
         url = "https://nachtraben.com/artifactory/snapshots"
         credentials {
-            username = System.getenv("ARTIFACTORY_USR") ?: "${artifactory.nachtraben.username}"
-            password = System.getenv("ARTIFACTORY_PWD") ?: "${artifactory.nachtraben.password}"
+            username = System.env["ARTIFACTORY_USR"] ?: "${artifactory.nachtraben.username}"
+            password = System.env["ARTIFACTORY_PWD"] ?: "${artifactory.nachtraben.password}"
 
         }
     }
@@ -60,8 +60,8 @@ artifactory {
     contextUrl = "https://nachtraben.com/artifactory"
     publish {
         repoKey = 'snapshots'
-        username = System.getenv("ARTIFACTORY_USR") ?: "${artifactory.nachtraben.username}"
-        password = System.getenv("ARTIFACTORY_PWD") ?: "${artifactory.nachtraben.password}"
+        username = System.env["ARTIFACTORY_USR"] ?: "${artifactory.nachtraben.username}"
+        password = System.env["ARTIFACTORY_PWD"] ?: "${artifactory.nachtraben.password}"
         maven = true
     }
 }
