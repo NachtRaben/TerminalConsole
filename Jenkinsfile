@@ -5,11 +5,11 @@ pipeline {
   }
   environment {
     ARTIFACTORY = credentials("artifactory")
-    sh('printenv | sort')
   }
   stages {
     stage('Build') {
       steps {
+        sh('printenv | sort')
         sh './gradlew clean build shadowJar'
       }
     }
