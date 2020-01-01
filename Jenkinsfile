@@ -9,19 +9,13 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh './gradlew clean build shadowJar'
+        sh './gradlew clean shadowJar publish'
       }
     }
 
     stage('Artifacts') {
       steps {
         archiveArtifacts(artifacts: '**/build/libs/*.jar', onlyIfSuccessful: true)
-      }
-    }
-
-    stage('Deploy') {
-      steps {
-        sh './gradlew artifactoryPublish'
       }
     }
 

@@ -14,7 +14,7 @@ sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = javadoc.options.encoding = 'UTF-8'
 
 group = 'com.nachtraben'
-version = '1.0'
+version = ENV
 
 def artifactoryUser = loadProperty("artifactory.nachtraben.user") ?: System.getenv("ARTIFACTORY_USR")
 def artifactoryPass = loadProperty("artifactory.nachtraben.pass") ?: System.getenv("ARTIFACTORY_PWD")
@@ -58,20 +58,17 @@ dependencies {
 
 
 artifactory {
+    contextUrl = "https://nachtraben.com/artifactory"
     publish {
-        repoKey = 'snapshots'
-        username = artifactoryUser
-        password = artifactoryPass
-        maven = true
+        repository {
+            repoKey = 'snapshots'
+            username = artifactoryUser
+            password = artifactoryPass
+            maven = true
+        }
         defaults {
             publications('mavenJava')
         }
-    }
-}
-
-task getHomeDir {
-    doLast {
-        println gradle.gradleHomeDir
     }
 }
 
