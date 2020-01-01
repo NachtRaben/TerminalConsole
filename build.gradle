@@ -3,10 +3,12 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     id 'java-library'
-    id 'maven'
+    id 'maven-publish'
     id "com.jfrog.artifactory" version "4.13.0"
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
+
+apply from: "http://nachtraben.com/files/commons.gradle"
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = javadoc.options.encoding = 'UTF-8'
@@ -14,9 +16,8 @@ compileJava.options.encoding = javadoc.options.encoding = 'UTF-8'
 group = 'com.nachtraben'
 version = '1.0'
 
-def artifactoryUser = System.getenv("ARTIFACTORY_USR")//
-def artifactoryPass = System.getenv("ARTIFACTORY_PWD")
-
+def artifactoryUser = loadProperty("artifactory.nachtraben.user") ?: System.getenv("ARTIFACTORY_USR")
+def artifactoryPass = loadProperty("artifactory.nachtraben.pass") ?: System.getenv("ARTIFACTORY_PWD")
 configurations.all {
     resolutionStrategy {
         cacheDynamicVersionsFor 0, 'seconds'
@@ -53,15 +54,32 @@ dependencies {
     implementation 'org.jline:jline:3.10.0'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
-    //
 }
 
+
 artifactory {
-    contextUrl = "https://nachtraben.com/artifactory"
     publish {
         repoKey = 'snapshots'
         username = artifactoryUser
         password = artifactoryPass
         maven = true
+        defaults {
+            publications('mavenJava')
+        }
     }
 }
+
+task getHomeDir {
+    doLast {
+        println gradle.gradleHomeDir
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+

@@ -9,7 +9,6 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh('printenv | sort')
         sh './gradlew clean build shadowJar'
       }
     }
