@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh './gradlew clean shadowJar publish'
+        sh './gradlew clean shadowJar artifactoryPublish'
       }
     }
 
