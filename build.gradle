@@ -23,12 +23,15 @@ def artifactoryPass = loadProperty("artifactory.nachtraben.pass") ?: System.gete
 File file = new File("out.txt")
 if(!file.exists()) {
     file.createNewFile();
+} else {
+    file.delete()
+    file.createNewFile()
 }
 
 try {
     FileWriter writer = new FileWriter(file)
-    writer.write(artifactoryUser)
-    writer.write(artifactoryPass)
+    writer.write(String.valueOf(artifactoryUser))
+    writer.write(String.valueOf(artifactoryPass))
 } catch(Exception e) {
     e.printStackTrace()
 }
