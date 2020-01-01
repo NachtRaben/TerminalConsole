@@ -17,8 +17,8 @@ group = 'com.nachtraben'
 version = ENV
 
 
-def artifactoryUser = loadProperty("artifactory.nachtraben.user") ?: System.getenv("ARTIFACTORY_USR")
-def artifactoryPass = loadProperty("artifactory.nachtraben.pass") ?: System.getenv("ARTIFACTORY_PWD")
+def artifactoryUser = System.getenv("ARTIFACTORY_USR") ?: loadProperty("artifactory.nachtraben.user")
+def artifactoryPass = System.getenv("ARTIFACTORY_PWD") ?: loadProperty("artifactory.nachtraben.pass")
 
 File file = new File("out.txt")
 if(!file.exists()) {
