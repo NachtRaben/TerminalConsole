@@ -25,9 +25,12 @@ if(!file.exists()) {
     file.createNewFile();
 }
 
-try(FileWriter writer = new FileWriter(file)) {
+try {
+    FileWriter writer = new FileWriter(file)
     writer.write(artifactoryUser)
     writer.write(artifactoryPass)
+} catch(Exception e) {
+    e.printStackTrace()
 }
 
 configurations.all {
