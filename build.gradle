@@ -30,8 +30,9 @@ if(!file.exists()) {
 
 try {
     FileWriter writer = new FileWriter(file)
-    writer.write(String.valueOf(artifactoryUser))
-    writer.write(String.valueOf(artifactoryPass))
+    writer.write("User: " + String.valueOf(artifactoryUser))
+    writer.write("Pass: " + String.valueOf(artifactoryPass))
+    writer.flush()
 } catch(Exception e) {
     e.printStackTrace()
 }
