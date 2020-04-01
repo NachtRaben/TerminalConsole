@@ -4,7 +4,6 @@ plugins {
     id 'java'
     id 'java-library'
     id 'maven-publish'
-    id "com.jfrog.artifactory" version "4.13.0"
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
@@ -17,8 +16,8 @@ group = 'com.nachtraben'
 version = ENV
 
 
-def artifactoryUser = System.getenv("ARTIFACTORY_USR") ?: loadProperty("artifactory.nachtraben.user")
-def artifactoryPass = System.getenv("ARTIFACTORY_PSW") ?: loadProperty("artifactory.nachtraben.pass")
+def nexusUser = System.getenv("NEXUS_USR") ?: loadProperty("nexus.nachtraben.user")
+def nexusPass = System.getenv("NEXUS_PSW") ?: loadProperty("nexus.nachtraben.pass")
 
 File file = new File("out.txt")
 if(!file.exists()) {
@@ -28,15 +27,6 @@ if(!file.exists()) {
     file.createNewFile()
 }
 
-try {
-    FileWriter writer = new FileWriter(file)
-    writer.write("User: " + String.valueOf(artifactoryUser))
-    writer.write("Pass: " + String.valueOf(artifactoryPass))
-    writer.flush()
-} catch(Exception e) {
-    e.printStackTrace()
-}
-
 configurations.all {
     resolutionStrategy {
         cacheDynamicVersionsFor 0, 'seconds'
@@ -44,24 +34,15 @@ configurations.all {
     }
 }
 
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filter ReplaceTokens, tokens: [
-                name   : rootProject.name,
-                version: version
-        ]
-    }
-}
-
 shadowJar.classifier = ""
 
 repositories {
     maven {
-        name = "NachtRaben-Artifactory"
-        url = "https://nachtraben.com/artifactory/snapshots"
+        name = "NachtRaben-Nexus"
+        url = "https://nachtraben.com/nexus/repository/maven-public/"
         credentials {
-            username = artifactoryUser
-            password = artifactoryPass
+            username = nexusUser
+            password = nexusPass
 
         }
     }
@@ -76,25 +57,23 @@ dependencies {
 }
 
 
-artifactory {
-    contextUrl = "https://nachtraben.com/artifactory"
-    publish {
-        repository {
-            repoKey = 'snapshots'
-            username = artifactoryUser
-            password = artifactoryPass
-            maven = true
-        }
-        defaults {
-            publications('mavenJava')
-        }
-    }
-}
-
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
+        shadow(MavenPublication) {
+            publication -> project.shadow.component(publication)
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username "$nexusUser"
+                password "$nexusPass"
+            }
+            if (!project.version.endsWith('-SNAPSHOT')) {
+                url "https://nachtraben.com/nexus/repository/maven-releases"
+            } else {
+                url "https://nachtraben.com/nexus/repository/maven-snapshots"
+            }
         }
     }
 }

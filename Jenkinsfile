@@ -4,12 +4,12 @@ pipeline {
     githubPush()
   }
   environment {
-    ARTIFACTORY = credentials("artifactory")
+    NEXUS = credentials("NachtRaben-Nexus")
   }
   stages {
     stage('Build') {
       steps {
-        sh './gradlew clean shadowJar artifactoryPublish'
+        sh './gradlew clean shadowJar publish'
       }
     }
 
@@ -21,7 +21,7 @@ pipeline {
 
     stage('Cleanup') {
       steps {
-        sh ''
+        cleanWs()
       }
     }
   }
