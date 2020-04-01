@@ -16,6 +16,7 @@ pipeline {
     stage('Artifacts') {
       steps {
         archiveArtifacts(artifacts: '**/build/libs/*.jar', onlyIfSuccessful: true)
+        //
       }
     }
 
